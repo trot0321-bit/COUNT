@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>蔡宛庭學測倒數計時</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+            overflow: hidden;
+        }
+
+        /* 背景圖片設定 */
+        .bg-img {
+            background-image: url('image.png'); /* 請確保圖片檔名正確 */
+            height: 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            filter: blur(2px) brightness(70%); /* 輕微模糊背景讓文字更清晰 */
+            position: absolute;
+            width: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            display: flex;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .time-segment {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .number {
+            font-size: 3.5rem;
+            font-weight: bold;
+        }
+
+        .label {
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-img"></div>
+
+    <div class="container">
+        <h1>蔡宛庭距離學測剩下：</h1>
+        <div class="timer" id="countdown">
+            <div class="time-segment"><span class="number" id="days">0</span><span class="label">天</span></div>
+            <div class="time-segment"><span class="number" id="hours">0</span><span class="label">時</span></div>
+            <div class="time-segment"><span class="number" id="minutes">0</span><span class="label">分</span></div>
+            <div class="time-segment"><span class="number" id="seconds">0</span><span class="label">秒</span></div>
+        </div>
+    </div>
+
+    <script>
+        // 設定目標日期：假設 2044 年學測為 1 月 22 日 09:00
+        const targetDate = new Date("Jan 22, 2044 09:00:00").getTime();
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = hours;
+            document.getElementById("minutes").innerText = minutes;
+            document.getElementById("seconds").innerText = seconds;
+
+            if (distance < 0) {
+                clearInterval(interval);
+                document.getElementById("countdown").innerHTML = "學測開始！加油！";
+            }
+        }
+
+        const interval = setInterval(updateCountdown, 1000);
+        updateCountdown();
+    </script>
+</body>
+</html>
